@@ -57,9 +57,9 @@ def perpendicular_bisector(a, b, length=1000):
     p2= m - length * np.array(p)
     return LineString([tuple(np.round(p1, 3)), tuple(np.round(p2, 3))])
 
+
 from shapely.ops import split
 from shapely.geometry import Polygon, Point, LineString, GeometryCollection
-
 
 def half_plane_polygon(line: LineString, space: Polygon, point: Point) -> Polygon:
     """
