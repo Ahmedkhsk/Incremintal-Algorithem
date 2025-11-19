@@ -1,4 +1,4 @@
-from geom_utils import dist, midpoint, vec, dot, cross, normalize, perpendicular
+from geom_utils import dist, midpoint, vec, dot, cross, normalize, perpendicular,perpendicular_bisector
 
 print("---- Geometry Function Tester ----")
 
@@ -24,6 +24,7 @@ while True:
     print("5) cross (needs vector C)")
     print("6) normalize (A→B)")
     print("7) perpendicular (A→B)")
+    print("8) perpendicular_bisector (A→B)")
 
     choice = input("Enter number: ")
 
@@ -53,6 +54,8 @@ while True:
 
     elif choice == "7":
         print("perpendicular =", perpendicular(vec(A, B)))
+    elif choice == "8":
+        print("perpendicular bisector =", perpendicular_bisector(A, B))
 
     else:
         print("Invalid choice.")

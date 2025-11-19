@@ -1,5 +1,5 @@
 import numpy as np
-from shapely.geometry import Point
+from shapely.geometry import Point,LineString
 
 def to_np(p):
     if isinstance(p, Point):
@@ -45,3 +45,14 @@ def normalize(u):
 def perpendicular(u):
     ux, uy = u
     return (-uy, ux)
+""" Perpendicular Bisector Function """
+def perpendicular_bisector(a, b, length=10):
+    a= to_np(a)
+    b= to_np(b)
+    m= midpoint(a,b)
+    v= vec(a,b)
+    p= perpendicular(v)
+    p= normalize(p)
+    p1= m+ length * np.array(p)
+    p2= m - length * np.array(p)
+    return LineString([tuple(p1), tuple(p2)])
