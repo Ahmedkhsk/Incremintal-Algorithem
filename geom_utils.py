@@ -46,7 +46,7 @@ def perpendicular(u):
     ux, uy = u
     return (-uy, ux)
 """ Perpendicular Bisector Function """
-def perpendicular_bisector(a, b, length=10):
+def perpendicular_bisector(a, b, length=1000):
     a= to_np(a)
     b= to_np(b)
     m= midpoint(a,b)
@@ -55,4 +55,4 @@ def perpendicular_bisector(a, b, length=10):
     p= normalize(p)
     p1= m+ length * np.array(p)
     p2= m - length * np.array(p)
-    return LineString([tuple(p1), tuple(p2)])
+    return LineString([tuple(np.round(p1, 3)), tuple(np.round(p2, 3))])
