@@ -1,5 +1,6 @@
 from cell import Cell
 from geometry_utils import GeometryUtils
+
 class VoronoiDiagram:
     def __init__(self, shapely_helper, voronoi_geo, bbox=10000):
         self.cells = []
@@ -55,3 +56,14 @@ class VoronoiDiagram:
 
         self.cells.append(new_cell)
         return new_cell
+
+    def incremental_voronoi(self, points, callback=None):
+        pts = [tuple(map(float, p)) for p in points]
+        self.cells = []
+
+        for i, p in enumerate(pts):
+            new_cell = self.insert_site(p)
+            if callback:
+                callback(i, p, self.cells)
+
+        return self.cells
