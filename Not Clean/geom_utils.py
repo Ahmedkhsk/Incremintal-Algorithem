@@ -183,3 +183,5 @@ def clip_polygon_by_halfplane(polygon, line: tuple, keep_positive: bool = True):
             return Polygon()
         return Polygon(output)
     return output
+
+
