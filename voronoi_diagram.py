@@ -31,6 +31,13 @@ class VoronoiDiagram:
         return val >= 0
 
     def insert_site(self, point):
+        # Check if this point is a duplicate of an existing site
+        for existing_cell in self.cells:
+            dist = GeometryUtils.dist(existing_cell.generator, point)
+            if dist < 1e-10:
+                # Skip duplicate points
+                return existing_cell
+
         new_cell = Cell(
             point,
             polygon=self.initial_polygon(),
