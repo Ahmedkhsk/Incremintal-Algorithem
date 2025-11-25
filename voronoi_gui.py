@@ -1,4 +1,3 @@
-# main.py
 import tkinter as tk
 from tkinter import ttk, simpledialog, messagebox
 import numpy as np
@@ -85,21 +84,48 @@ class VoronoiGUI:
         if self.num_points < 2:
             messagebox.showerror("Error", "Please enter number of points first.")
             return
-        self.points_for_voronoi.clear()
+
+        win = tk.Toplevel(self.root)
+        win.title("Enter Points")
+        win.geometry("350x400")
+        win.transient(self.root)
+
+        entries = []
+
+        frm = ttk.Frame(win)
+        frm.pack(padx=10, pady=10, fill="both", expand=True)
+
+        ttk.Label(frm, text="Enter all points (x,y):", font=("Arial", 14, "bold")).pack(pady=10)
+
         for i in range(self.num_points):
-            while True:
-                coords = simpledialog.askstring("Point Input", f"Enter coordinates of point {i+1} as x,y:")
-                if coords is None:
+            row = ttk.Frame(frm)
+            row.pack(fill="x", pady=4)
+            ttk.Label(row, text=f"Point {i+1}:", width=12).pack(side="left")
+            ent = ttk.Entry(row, width=20)
+            ent.pack(side="left", padx=5)
+            entries.append(ent)
+
+        def submit():
+            pts = []
+            for idx, ent in enumerate(entries):
+                val = ent.get().strip()
+                if not val:
+                    messagebox.showerror("Error", f"Point {idx+1} is empty.")
                     return
                 try:
-                    x_str, y_str = coords.split(",")
-                    x, y = float(x_str.strip()), float(y_str.strip())
-                    self.points_for_voronoi.append((x, y))
-                    break
-                except Exception:
-                    messagebox.showerror("Error", "Invalid format. Please enter as x,y")
-        self.pairs = list(combinations(self.points_for_voronoi, 2))
-        self.create_plot()
+                    x, y = val.split(",")
+                    pts.append((float(x), float(y)))
+                except:
+                    messagebox.showerror("Error", f"Invalid format for point {idx+1}. Use x,y")
+                    return
+
+            self.points_for_voronoi = pts
+            self.pairs = list(combinations(self.points_for_voronoi, 2))
+            self.create_plot()
+            win.destroy()
+
+        btn = ttk.Button(win, text="Submit Points", command=submit)
+        btn.pack(pady=10)
 
     def create_plot(self):
         if hasattr(self, 'canvas'):
@@ -190,7 +216,6 @@ class VoronoiGUI:
                     self.current_step_idx = len(self.pair_steps) - 1
         self.run_step()
 
-    # --------- Drawing Functions ---------
     def draw_point(self, p, label=None, s=40, color='blue'):
         x, y = p
         self.ax.scatter(x, y, s=s, color=color, zorder=5)
@@ -217,7 +242,6 @@ class VoronoiGUI:
         if fill:
             self.ax.fill(xs, ys, alpha=alpha, color=edgecolor)
 
-    # --------- Main Step Execution ---------
     def run_step(self):
         self.ax.clear()
         self.ax.set_xlim(-15, 15)
@@ -298,34 +322,29 @@ class VoronoiGUI:
 
             elif step_name == "Incremental Voronoi":
                 self.stored_bisectors.clear()  
-
                 cells = VD.incremental_voronoi(self.points_for_voronoi)
                 beautiful_colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FECA57', '#DDA0DD', '#98D8C8', '#F7DC6F']
 
                 for i, cell in enumerate(cells):
                     col = beautiful_colors[i % len(beautiful_colors)]
-
                     self.draw_polygon(cell.polygon, edgecolor=col, fill=True, alpha=0.35, linewidth=4)
-
                     gx, gy = cell.generator
                     self.ax.scatter(gx, gy, s=400, color='black', zorder=6)
                     self.ax.scatter(gx, gy, s=250, color='white', zorder=6)
                     self.ax.scatter(gx, gy, s=140, color=col, zorder=6)
-
                     self.ax.text(gx, gy, f"P{i+1}", fontsize=18, fontweight='bold', color='white',
                                 ha='center', va='center',
                                 bbox=dict(boxstyle="circle,pad=0.5", facecolor=col, edgecolor='black', linewidth=2.5),
                                 zorder=7)
 
         for M in self.stored_midpoints:
-            self.draw_point(M, s=60, color='red') 
+            self.draw_point(M, s=60, color='red')
         for bis in self.stored_bisectors:
             self.draw_line_from_linestring(bis, linewidth=2, linestyle='--', color='gray', alpha=0.7)
 
         self.highlight_step(step_name)
         self.ax.legend().set_visible(False)
         self.canvas.draw()
-
 
 if __name__ == "__main__":
     root = tk.Tk()
