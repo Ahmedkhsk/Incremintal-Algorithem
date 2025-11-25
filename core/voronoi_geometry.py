@@ -1,5 +1,5 @@
-from geometry_utils import GeometryUtils
-from shapely_helper import ShapelyHelper
+from .geometry_utils import GeometryUtils
+from .shapely_helper import ShapelyHelper
 
 class VoronoiGeometry:
     def __init__(self, shapely_helper: ShapelyHelper):

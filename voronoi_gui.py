@@ -5,11 +5,11 @@ import numpy as np
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 
-from geometry_utils import GeometryUtils
-from shapely_helper import ShapelyHelper
-from voronoi_geometry import VoronoiGeometry
-from voronoi_diagram import VoronoiDiagram
-from cell import Cell
+from core.geometry_utils import GeometryUtils
+from core.shapely_helper import ShapelyHelper
+from core.voronoi_geometry import VoronoiGeometry
+from core.voronoi_diagram import VoronoiDiagram
+from core.cell import Cell
 from itertools import combinations
 
 SH = ShapelyHelper()
@@ -318,7 +318,7 @@ class VoronoiGUI:
                                 zorder=7)
 
         for M in self.stored_midpoints:
-            self.draw_point(M, s=60, color='red')
+            self.draw_point(M, s=60, color='red') 
         for bis in self.stored_bisectors:
             self.draw_line_from_linestring(bis, linewidth=2, linestyle='--', color='gray', alpha=0.7)
 

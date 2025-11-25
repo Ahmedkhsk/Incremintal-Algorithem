@@ -1,5 +1,5 @@
-from cell import Cell
-from geometry_utils import GeometryUtils
+from core.cell import Cell
+from core.geometry_utils import GeometryUtils
 
 class VoronoiDiagram:
     def __init__(self, shapely_helper, voronoi_geo, bbox=10000):
