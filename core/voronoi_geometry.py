@@ -9,10 +9,8 @@ class VoronoiGeometry:
         a = GeometryUtils.to_np(a, self.sh.Point)
         b = GeometryUtils.to_np(b, self.sh.Point)
 
-        # Check if points are identical (avoid zero-length vector)
         dist = GeometryUtils.dist(a, b)
         if dist < 1e-10:
-            # Return vertical line through point as fallback
             return self.sh.LineString([(a[0], a[1] - length), (a[0], a[1] + length)])
 
         m = GeometryUtils.midpoint(a, b)
