@@ -24,24 +24,25 @@ class VoronoiDiagram:
         c = x1*y2 - x2*y1
         return (a, b, c)
 
-    def choose_halfplane_side(self, new_point, old_point, bisector):
+    def choose_halfplane_side(self, new_point, bisector):
         new_p = GeometryUtils.to_np(new_point)
         line = self.line_equation(bisector)
         val = self.vg.signed_distance_to_line(new_p, line)
         return val >= 0
 
     def insert_site(self, point):
-        for existing_cell in self.cells:
-            dist = GeometryUtils.dist(existing_cell.generator, point)
-            if dist < 1e-10:
-                return existing_cell
-
+        
         new_cell = Cell(
             point,
             polygon=self.initial_polygon(),
             shapely_helper=self.sh,
             voronoi_geo=self.vg
         )
+        
+        for existing_cell in self.cells:
+            dist = GeometryUtils.dist(existing_cell.generator, point)
+            if dist < 1e-10:
+                return existing_cell
 
         for cell in self.cells:
             if not cell.polygon:
